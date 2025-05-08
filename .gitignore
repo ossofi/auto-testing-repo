@@ -16,5 +16,4 @@ yarn-error.log*
 .DS_Store
 
 # Package lock files (if you want to ignore these too, though it's often a good idea to include them)
-package-lock.json
 yarn.lock
