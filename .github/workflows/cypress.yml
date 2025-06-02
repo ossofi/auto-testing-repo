@@ -14,8 +14,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Clear NPM Cache
+        run: npm cache clean --force
+
       - name: Install Dependencies
-        run: npm install
+        run: npm ci 
 
       - name: Install Firefox
         run: sudo apt-get update && sudo apt-get install firefox -y
@@ -23,8 +26,11 @@ jobs:
       - name: Check Installed Browsers
         run: google-chrome --version && firefox --version
 
+      - name: Verify Installed Dependencies
+        run: npm list --depth=0 
+
       - name: Verify Cypress Installation
-        run: npx list
+        run: npx cypress verify 
 
       - name: Run Cypress Tests (Chrome Headless)
         run: npx cypress run --browser chrome --headless
