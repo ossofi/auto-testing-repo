@@ -3,9 +3,9 @@ name: Run Cypress Tests
 on:
   push:
     branches:
-      - main
+      - ui_testing
   schedule:
-    - cron: '0 0 * * *'  # Runs tests daily
+    - cron: '0 0 * * *'
 
 jobs:
   test:
@@ -17,5 +17,23 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Run Cypress Tests
-        run: npx cypress run --browser chrome
+      - name: Install Firefox
+        run: sudo apt-get update && sudo apt-get install firefox -y
+
+      - name: Check Installed Browsers
+        run: google-chrome --version && firefox --version
+
+      - name: Verify Cypress Installation
+        run: npx cypress verify
+
+      - name: Run Cypress Tests (Chrome Headless)
+        run: npx cypress run --browser chrome --headless
+
+      - name: Run Cypress Tests (Firefox Headless)
+        run: npx cypress run --browser firefox --headless
+
+      - name: Upload Test Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: mochawesome-report
+          path: cypress/reports/
