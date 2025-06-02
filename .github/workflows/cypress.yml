@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Install Dependencies
         run: npm install
@@ -24,13 +24,16 @@ jobs:
         run: google-chrome --version && firefox --version
 
       - name: Verify Cypress Installation
-        run: npx cypress verify
+        run: npx list
 
       - name: Run Cypress Tests (Chrome Headless)
         run: npx cypress run --browser chrome --headless
 
       - name: Run Cypress Tests (Firefox Headless)
         run: npx cypress run --browser firefox --headless
+            
+      - name: Set TERM Variable
+        run: echo "TERM=xterm" >> $GITHUB_ENV
 
       - name: Ensure Report Directory Exists
         run: mkdir -p cypress/reports
