@@ -3,12 +3,13 @@
 describe('Alerts testing', () => {
 
   beforeEach(() => {
-    cy.visit('https://demoqa.com/alerts');
-    Cypress.on('uncaught:exception', (err, runnable) => {
+    cy.visit('https://demoqa.com/alerts', { timeout: 120000 });
+    Cypress.on('uncaught:exception', (err) => {
       console.log("Uncaught error:", err.message);
-      return false; 
+      return false;
     });
   });
+  
 
   it('handles alert with OK button', () => {
     cy.wait(500);
@@ -46,7 +47,7 @@ describe('Alerts testing', () => {
     cy.window().then((win) => {
       cy.stub(win, 'prompt').returns('Cypress Test');
     });
-    cy.get('#promptButton').click();
+    cy.get('#promtButton').click();
     cy.get('#promptResult').should('contain', 'Cypress Test');
   });
   

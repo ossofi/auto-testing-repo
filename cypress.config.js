@@ -6,10 +6,22 @@ module.exports = defineConfig({
       on('after:screenshot', (details) => {
         console.log('Screenshot saved:', details.path);
       });
+
+      on('task', {
+        log(message) {
+          console.log(message);
+          return null;
+        },
+      });
     },
+
     screenshotOnRunFailure: true,
     baseUrl: 'https://demoqa.com',
+
+    pageLoadTimeout: 120000,
+    defaultCommandTimeout: 10000,
   },
+
   reporter: 'mochawesome',
   reporterOptions: {
     reportDir: 'cypress/reports',
