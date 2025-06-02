@@ -32,8 +32,11 @@ jobs:
       - name: Run Cypress Tests (Firefox Headless)
         run: npx cypress run --browser firefox --headless
 
+      - name: Ensure Report Directory Exists
+        run: mkdir -p cypress/reports
+
       - name: Upload Test Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: mochawesome-report
           path: cypress/reports/
