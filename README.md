@@ -30,3 +30,12 @@ Contributor Guide
 Create a branch: git checkout -b feature-branch
 Commit changes: git commit -m "Added new test"
 Push & open a Pull Request.
+
+# Review 
+* Make redmi more readable
+* Use in test only random data. Do not hard code test data.
+* Remove all locators to the Page Object constructor section
+* Do not hardcode waiters by time
+* Are The tests are configured to run in parallel?
+* Are The Tests are run automatically via CI/CD (e.g. GitHub Actions)?
+* How to run a test scenario with key word, in selected browser and with custom resolution

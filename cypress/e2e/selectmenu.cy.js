@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
-
+// TODO The class name css-12jo7m5 appears to be auto-generated, likely by a CSS-in-JS library like Emotion, Styled-components, or similar.
+// Such class names can change frequently due to updates or re-compilation of styles, breaking your tests unexpectedly.
 describe('DemoQA Select Menu Tests', () => {
     beforeEach(() => {
         cy.visit('https://demoqa.com/select-menu');
@@ -27,17 +28,17 @@ describe('DemoQA Select Menu Tests', () => {
 
     it('Selects a color from the dropdown', () => {
         cy.visit('https://demoqa.com/select-menu');
-    
+
         cy.get('#react-select-3-input').click({ force: true }).should('be.visible');
         cy.wait(500);
         cy.get('#react-select-3-input').type('Blue{enter}', { force: true });
 
         cy.wait(4000);
-        cy.get('*').contains('Blue').should('exist'); 
+        cy.get('*').contains('Blue').should('exist');
         cy.get('*').each(($el) => {
             cy.log("Detected:", $el.text());
         });
 
     });
-    
+
 });
