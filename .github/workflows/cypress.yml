@@ -14,41 +14,24 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Clear NPM Cache
-        run: npm cache clean --force
-
       - name: Install Dependencies
-        run: npm ci 
+        run: npm ci
 
-      - name: Remove and Reinstall Firefox and Dependencies
+      - name: Install Required Browsers & Dependencies
         run: |
           sudo apt-get update -y
-          sudo apt-get remove -y firefox
-          sudo apt-get install -y firefox xvfb libgtk-3-0 libgbm-dev libasound2t64
-
-      - name: Check Installed Browsers
-        run: google-chrome --version && firefox --version
-
-      - name: Verify Firefox Installation
-        run: which firefox || echo "Firefox is not installed"
-
-      - name: Verify Installed Dependencies
-        run: npm list --depth=0 
-
+          sudo apt-get install -y google-chrome-stable firefox xvfb libgtk-3-0 libgbm-dev libasound2t64
+          
       - name: Verify Cypress Installation
-        run: npx cypress verify 
-
-      - name: Run Cypress Tests (Chrome Headless)
-        run: npx cypress run --browser chrome --headless
-
-      - name: Run Cypress Tests (Firefox Headless)
-        run: npx cypress run --browser firefox || echo "Firefox test failed, browser missing"
-
-      - name: Try Running Cypress Without Headless Mode
-        run: npx cypress run --browser firefox --headed || echo "Firefox test failed again"
+        run: npx cypress verify
 
       - name: Set TERM Variable
         run: echo "TERM=xterm" >> $GITHUB_ENV
+
+      - name: Run Cypress Tests in Parallel (Chrome & Firefox)
+        run: |
+          npx cypress run --record --parallel --browser chrome || echo "Chrome test failed"
+          npx cypress run --record --parallel --browser firefox || echo "Firefox test failed"
 
       - name: Ensure Report Directory Exists
         run: mkdir -p cypress/reports

@@ -1,6 +1,8 @@
 /// <reference types="cypress" />
+import AlertsPage from '../pages/AlertsPage';
 
 describe('Alerts testing', () => {
+  const alertsPage = new AlertsPage();
 
   beforeEach(() => {
     cy.visit('https://demoqa.com/alerts', { timeout: 120000 });
@@ -9,29 +11,22 @@ describe('Alerts testing', () => {
       return false;
     });
   });
-  
 
   it('handles alert with OK button', () => {
-    cy.wait(500);
-    cy.get('#alertButton').click();
-    cy.on('window:alert', (text) => {
-      expect(text).to.contains('You clicked a button');
-    });
+    alertsPage.clickAlertButton();
+    alertsPage.verifyAlertText('You clicked a button');
   });
 
   it('handles delayed alert', () => {
-    cy.wait(500);
-    cy.get('#timerAlertButton').click();
-    cy.on('window:alert', (text) => {
-      expect(text).to.contains('This alert appeared after 5 seconds');
-    });
+    alertsPage.clickDelayedAlert();
+    alertsPage.verifyAlertText('This alert appeared after 5 seconds');
   });
 
   it('handles confirm alert - OK', () => {
     cy.window().then((win) => {
       cy.stub(win, 'confirm').returns(true);
     });
-    cy.get('#confirmButton').click();
+    alertsPage.clickConfirmButton();
     cy.get('#confirmResult').should('contain', 'You selected Ok');
   });
 
@@ -39,7 +34,7 @@ describe('Alerts testing', () => {
     cy.window().then((win) => {
       cy.stub(win, 'confirm').returns(false);
     });
-    cy.get('#confirmButton').click();
+    alertsPage.clickConfirmButton();
     cy.get('#confirmResult').should('contain', 'You selected Cancel');
   });
 
@@ -47,8 +42,7 @@ describe('Alerts testing', () => {
     cy.window().then((win) => {
       cy.stub(win, 'prompt').returns('Cypress Test');
     });
-    cy.get('#promtButton').click();
+    alertsPage.clickPromptButton();
     cy.get('#promptResult').should('contain', 'Cypress Test');
   });
-  
 });
