@@ -1,10 +1,22 @@
 class SelectMenuPage {
+  constructor() {
+    this.url = 'https://demoqa.com/select-menu';
+    this.oldSelectMenu = '#oldSelectMenu';
+    this.selectOneContainer = '#selectOne';
+    this.selectOneControl = 'div[class*="control"]';
+    this.selectOneMenu = 'div[class*="menu"]';
+    this.selectOneOption = 'div[class*="option"]';
+    this.selectOneSingleValue = 'div[class*="singleValue"]';
+    this.multiSelectInput = '#react-select-4-input';
+    this.colorSelectInput = '#react-select-3-input';
+  }
+
   visit() {
-    cy.visit('https://demoqa.com/select-menu');
+    cy.visit(this.url);
   }
 
   selectOldStyle(color) {
-    cy.get('#oldSelectMenu')
+    cy.get(this.oldSelectMenu)
       .select(color)
       .invoke('val')
       .then(val => {
@@ -13,43 +25,42 @@ class SelectMenuPage {
   }
 
   selectTitle(title) {
-    cy.get('#selectOne')
+    cy.get(this.selectOneContainer)
       .parent()
-      .find('div[class*="control"]')
+      .find(this.selectOneControl)
       .click({ force: true });
-      
-    cy.get('div[class*="menu"]', { timeout: 10000 }).should('be.visible');
-    
-    cy.contains('div[class*="option"]', title)
+
+    cy.get(this.selectOneMenu, { timeout: 10000 }).should('be.visible');
+
+    cy.contains(this.selectOneOption, title)
       .should('exist')
       .click({ force: true });
-      
-    cy.get('#selectOne')
+
+    cy.get(this.selectOneContainer)
       .parent()
-      .find('div[class*="singleValue"]')
+      .find(this.selectOneSingleValue)
       .should('contain.text', title);
   }
 
   selectMultiColors(colors) {
-    cy.get('#react-select-4-input')
+    cy.get(this.multiSelectInput)
       .click({ force: true })
       .should('be.visible');
-      
+
     colors.forEach(color => {
-      cy.get('#react-select-4-input')
+      cy.get(this.multiSelectInput)
         .type(`${color}{enter}`, { force: true });
     });
-    
   }
 
   selectColor(color) {
-    cy.get('#react-select-3-input')
+    cy.get(this.colorSelectInput)
       .click({ force: true })
       .should('be.visible');
-      
-    cy.get('#react-select-3-input')
+
+    cy.get(this.colorSelectInput)
       .type(`${color}{enter}`, { force: true });
-      
+
     cy.get('*')
       .contains(color)
       .should('exist');
